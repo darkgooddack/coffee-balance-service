@@ -1,4 +1,3 @@
-# app/kafka/consumer.py
 import asyncio
 import json
 from aiokafka import AIOKafkaConsumer

@@ -2,6 +2,7 @@ import json
 from aiokafka import AIOKafkaProducer
 from app.core.config import settings
 
+
 class KafkaProducerWrapper:
     def __init__(self):
         self._producer: AIOKafkaProducer | None = None

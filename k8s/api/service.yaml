@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: coffee-balance-api
+  namespace: balance-dev
+spec:
+  type: LoadBalancer
+  selector:
+    app: coffee-balance-api
+  ports:
+    - port: 8000
+      targetPort: 8000

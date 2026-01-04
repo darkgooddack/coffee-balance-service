@@ -1,5 +1,5 @@
-# app/kafka/handlers/base.py
 from abc import ABC, abstractmethod
+
 
 class KafkaMessageHandler(ABC):
     topic: str

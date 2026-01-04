@@ -1,6 +1,6 @@
-# app/kafka/router.py
 from app.kafka.handlers.base import KafkaMessageHandler
 from app.core.logger import logger
+
 
 class KafkaRouter:
     def __init__(self, handlers: list[KafkaMessageHandler]):

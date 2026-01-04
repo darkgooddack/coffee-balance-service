@@ -7,7 +7,7 @@ from app.database.db import Base
 
 
 class Balance(Base):
-    __tablename__ = "users"
+    __tablename__ = "balance"
 
     user_id: Mapped[uuid.UUID] = mapped_column(
         primary_key=True

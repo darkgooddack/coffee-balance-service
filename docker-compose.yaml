@@ -1,0 +1,39 @@
+services:
+  coffee_balance_app:
+    build: .
+    container_name: coffee_balance_app
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      coffee_balance_db:
+        condition: service_healthy
+    networks:
+      - coffee_balance_network
+
+  coffee_balance_db:
+    image: postgres:17
+    container_name: coffee_balance_db
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "6432:5432"
+    volumes:
+      - coffee_balance_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - coffee_balance_network
+
+volumes:
+  coffee_balance_postgres_data:
+
+networks:
+  coffee_balance_network:
+    driver: bridge

@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: coffee-balance-api
+  namespace: balance-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: coffee-balance-api
+  template:
+    metadata:
+      labels:
+        app: coffee-balance-api
+    spec:
+      containers:
+        - name: api
+          image: ulyanapitsukha/coffee-balance-service:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - secretRef:
+                name: coffee-balance-secrets
