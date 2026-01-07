@@ -8,9 +8,9 @@ class AuthResponseHandler(KafkaMessageHandler):
 
     async def handle(self, payload: dict) -> None:
         request_id = payload.get("request_id")
-        user_id = payload.get("user_id")
 
-        if request_id and user_id:
-            resolve_future(request_id, user_id)
-        else:
-            logger.error(f"Invalid auth response: {payload}")
+        if not request_id:
+            logger.error(f"Missing request_id in auth response: {payload}")
+            return
+
+        resolve_future(request_id, payload)
