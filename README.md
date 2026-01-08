@@ -2,6 +2,10 @@
 
 Сервис баланса пользователей. Отвечает за хранение и изменение баланса, взаимодействует с другими сервисами через события.
 
+Упрощённая схема проекта.
+
+![img_2.png](img_2.png)
+
 ## Запуск
 
 Перед запуском убедитесь, что **minikube запущен**.
@@ -33,9 +37,10 @@ minikube tunnel
 
 ## API
 
-Authorization: Bearer <JWT>
 
 ### POST /api/v1/balance/top-up
+
+Authorization: Bearer <JWT>
 
 Вход:
 ```json
@@ -46,6 +51,7 @@ Authorization: Bearer <JWT>
 Выход:
 ```json
 {
+  "user_id": "uuid",
   "balance": 300
 }
 ```
