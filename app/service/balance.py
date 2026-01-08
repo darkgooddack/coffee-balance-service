@@ -5,7 +5,7 @@ class BalanceService:
     def __init__(self, repo: BalanceRepository):
         self.repo = repo
 
-    async def top_up(self, user_id: str, amount: int):
+    async def top_up(self, user_id: str, amount: int) -> int:
         return await self.repo.update_balance(user_id, amount)
 
     async def get_balance(self, user_id: str):

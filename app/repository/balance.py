@@ -15,10 +15,10 @@ class BalanceRepository:
         await self.session.commit()
         return balance
 
-    async def update_balance(self, user_id: str, amount: int) -> Balance:
+    async def update_balance(self, user_id: str, amount: int) -> int:
         balance = await self.get_balance(user_id)
         if balance is None:
             balance = await self.create_balance(user_id)
         balance.balance += amount
         await self.session.commit()
-        return balance
+        return balance.balance
