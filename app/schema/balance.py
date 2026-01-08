@@ -7,3 +7,6 @@ class BalanceOut(BaseModel):
 
 class BalanceTopUpRequest(BaseModel):
     amount: int
+
+class BalancePayRequest(BaseModel):
+    amount: int

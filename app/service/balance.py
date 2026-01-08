@@ -1,3 +1,9 @@
+from app.utils.error import (
+    BalanceNotFoundError,
+    InsufficientFundsError,
+    InvalidAmountError,
+    InternalServiceError,
+)
 from app.repository.balance import BalanceRepository
 
 
@@ -6,19 +12,32 @@ class BalanceService:
         self.repo = repo
 
     async def top_up(self, user_id: str, amount: int) -> int:
-        return await self.repo.update_balance(user_id, amount)
+        if amount <= 0:
+            raise InvalidAmountError()
 
-    async def get_balance(self, user_id: str):
+        try:
+            return await self.repo.update_balance(user_id, amount)
+        except Exception:
+            raise InternalServiceError()
+
+    async def pay(self, user_id: str, amount: int) -> int:
+        if amount <= 0:
+            raise InvalidAmountError()
+
+        balance = await self.repo.get_balance(user_id)
+        if balance is None:
+            raise BalanceNotFoundError()
+
+        if balance.balance < amount:
+            raise InsufficientFundsError()
+
+        try:
+            return await self.repo.update_balance(user_id, -amount)
+        except Exception:
+            raise InternalServiceError()
+
+    async def get_balance(self, user_id: str) -> int:
         balance = await self.repo.get_balance(user_id)
         if not balance:
             return 0
         return balance.balance
-
-    async def create_balance_for_user(self, user_id: str) -> tuple[bool, str | None]:
-        try:
-            await self.repo.create_balance(user_id)
-            return True, None
-        except Exception:
-            return False, "internal_error"
-
-
