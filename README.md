@@ -77,6 +77,14 @@ kubectl apply -f k8s/api -n balance-dev
 ```
 minikube tunnel
 ```
+Посмотреть поды:
+```
+kubectl get pods -n balance-dev
+```
+Смотреть логи (у вас контейнер с другим id):
+```
+kubectl logs -f coffee-balance-api-688d44b778-9w7c8 -n balance-dev
+```
 
 ## API
 

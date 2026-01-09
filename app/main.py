@@ -2,19 +2,19 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
 
-from core.config import settings
-from core.exceptions import map_exception
-from core.logging import logger
+from app.core.config import settings
+from app.core.exceptions import map_exception
+from app.core.logging import logger
 
-from infrastructure.messaging.kafka.consumer import KafkaConsumerManager
-from infrastructure.messaging.kafka.router import KafkaRouter
-from presentation.consumers.kafka.handlers.auth_response_handler import (
+from app.infrastructure.messaging.kafka.consumer import KafkaConsumerManager
+from app.infrastructure.messaging.kafka.router import KafkaRouter
+from app.presentation.consumers.kafka.handlers.auth_response_handler import (
     AuthResponseHandler,
 )
-from presentation.consumers.kafka.handlers.user_registered_handler import (
+from app.presentation.consumers.kafka.handlers.user_registered_handler import (
     UserRegisteredHandler,
 )
-from presentation.api.balance_router import router
+from app.presentation.api.balance_router import router
 
 
 handlers = [
@@ -31,7 +31,7 @@ kafka_consumer = KafkaConsumerManager(
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    logger.info("Starting Kafka consumers...")
+    logger.info("Starting Kafka consumers.2..")
 
     try:
         await kafka_consumer.start()

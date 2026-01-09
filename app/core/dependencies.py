@@ -5,6 +5,7 @@ from app.infrastructure.repositories.sqlalchemy_balance_repository import (
     SqlAlchemyBalanceRepository,
 )
 from app.database.db import get_session
+from app.infrastructure.auth.auth_client import AuthClient
 
 
 async def get_balance_service(
@@ -12,3 +13,7 @@ async def get_balance_service(
 ) -> BalanceService:
     repo = SqlAlchemyBalanceRepository(session)
     return BalanceService(repo)
+
+
+async def get_auth_client() -> AuthClient:
+    return AuthClient()
