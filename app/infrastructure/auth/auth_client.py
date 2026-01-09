@@ -6,6 +6,7 @@ from app.domain.errors import (
     UserNotFoundError,
     InternalServiceError,
     AuthTimeoutError,
+    TokenExpiredError
 )
 from app.infrastructure.messaging.kafka.producer import get_kafka_producer
 
@@ -15,6 +16,7 @@ ERROR_MAP = {
     "user_not_found": UserNotFoundError,
     "internal_error": InternalServiceError,
     "auth_timeout": AuthTimeoutError,
+    "token_expired": TokenExpiredError,
 }
 
 

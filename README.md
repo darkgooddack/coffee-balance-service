@@ -123,3 +123,9 @@ Authorization: Bearer <JWT>
 
 ![img.png](img.png)
 
+
+## Нагрузочное тестирование с Locust
+
+![img_4.png](img_4.png)
+
+![img_3.png](img_3.png)

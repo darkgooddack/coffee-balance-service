@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
+from starlette.responses import JSONResponse
 
 from app.core.config import settings
 from app.core.exceptions import map_exception
@@ -61,7 +62,13 @@ app = FastAPI(
 
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
-    raise map_exception(exc)
+    logger.error("Handled exception: %s", exc)
+    http_exc = map_exception(exc)
+    return JSONResponse(
+        status_code=http_exc.status_code,
+        content={"detail": http_exc.detail},
+    )
+
 
 
 app.include_router(router, prefix=settings.api.prefix)

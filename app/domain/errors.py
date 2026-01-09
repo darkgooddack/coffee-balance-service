@@ -29,3 +29,7 @@ class InsufficientFundsError(DomainError):
 
 class InvalidAmountError(DomainError):
     pass
+
+
+class TokenExpiredError(DomainError):
+    pass

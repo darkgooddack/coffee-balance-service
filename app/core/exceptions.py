@@ -1,7 +1,6 @@
 from fastapi import HTTPException, status
 from app.domain import errors as domain_errors
 
-
 ERROR_MAPPING = {
     domain_errors.InvalidTokenError: (
         status.HTTP_401_UNAUTHORIZED,
@@ -11,9 +10,17 @@ ERROR_MAPPING = {
         status.HTTP_404_NOT_FOUND,
         "Пользователь не найден",
     ),
+    domain_errors.TokenExpiredError: (
+        status.HTTP_401_UNAUTHORIZED,
+        "Срок действия токена истёк",
+    ),
     domain_errors.AuthTimeoutError: (
         status.HTTP_504_GATEWAY_TIMEOUT,
         "Превышено время ожидания авторизации",
+    ),
+    domain_errors.InternalServiceError: (
+        status.HTTP_500_INTERNAL_SERVER_ERROR,
+        "Внутренняя ошибка сервиса",
     ),
     domain_errors.BalanceNotFoundError: (
         status.HTTP_404_NOT_FOUND,

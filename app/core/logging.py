@@ -8,7 +8,7 @@ class LoggerSingleton:
     @classmethod
     def get_logger(cls) -> logging.Logger:
         if cls._instance is None:
-            cls._instance = logging.getLogger("coffee-email")
+            cls._instance = logging.getLogger("coffee-balance")
             cls._instance.setLevel(logging.INFO)
 
             handler = logging.StreamHandler()
