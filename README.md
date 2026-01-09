@@ -6,6 +6,49 @@
 
 ![img_2.png](img_2.png)
 
+
+## Архитектура проекта
+
+### main.py
+
+- Входная точка приложения.
+- Настройка FastAPI, lifespan, Kafka, роутеров и health check.
+
+### presentation
+
+Отвечает за прием запросов от внешнего мира и передачу их в application layer.
+
+- api/ — обработка HTTP-запросов, передает данные в application.services.
+- consumers/ — обработка Kafka сообщений, передача в сервисы через handlers.
+
+### application
+
+Отвечает за бизнес-логику.
+
+- services/ — бизнес-логика, использует интерфейсы (репозитории, события). 
+Содержит логику бизнес-процессов, но не работает напрямую с базой данных или Kafka.
+- interfaces/ — абстракции, которые реализует infrastructure.
+- dtos/ — промежуточные структуры для передачи в presentation.
+
+
+### domain
+
+- entities/ — @dataclass для бизнес-сущностей, без ORM и фреймворков.
+- errors.py — чистые ошибки домена, например BalanceNotFoundError.
+
+### infrastructure
+
+Знает как реализовать интерфейсы и работать с технологиями, но не содержит бизнес-логику.
+
+- db/models/ — SQLAlchemy модели.
+- repositories/ — реализация интерфейсов репозиториев.
+- messaging/kafka/ — producer, consumer, router для Kafka.
+- auth/ — AuthClient для Kafka авторизации.
+
+
+
+
+
 ## Запуск
 
 Перед запуском убедитесь, что **minikube запущен**.
@@ -33,6 +76,14 @@ kubectl apply -f k8s/api -n balance-dev
 Убедитесь, что включён minikube tunnel:
 ```
 minikube tunnel
+```
+Посмотреть поды:
+```
+kubectl get pods -n balance-dev
+```
+Смотреть логи (у вас контейнер с другим id):
+```
+kubectl logs -f coffee-balance-api-688d44b778-9w7c8 -n balance-dev
 ```
 
 ## API
@@ -72,3 +123,9 @@ Authorization: Bearer <JWT>
 
 ![img.png](img.png)
 
+
+## Нагрузочное тестирование с Locust
+
+![img_4.png](img_4.png)
+
+![img_3.png](img_3.png)

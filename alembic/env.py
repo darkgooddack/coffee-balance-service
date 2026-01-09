@@ -2,7 +2,7 @@ from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config, pool
 from alembic import context
-from app.models.balance import Balance
+from app.infrastructure.db.models.balance_model import BalanceModel
 from app.database.db import Base
 from app.core.config import settings
 
