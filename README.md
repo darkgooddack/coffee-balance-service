@@ -6,6 +6,49 @@
 
 ![img_2.png](img_2.png)
 
+
+## Архитектура проекта
+
+### main.py
+
+- Входная точка приложения.
+- Настройка FastAPI, lifespan, Kafka, роутеров и health check.
+
+### presentation
+
+Отвечает за прием запросов от внешнего мира и передачу их в application layer.
+
+- api/ — обработка HTTP-запросов, передает данные в application.services.
+- consumers/ — обработка Kafka сообщений, передача в сервисы через handlers.
+
+### application
+
+Отвечает за бизнес-логику.
+
+- services/ — бизнес-логика, использует интерфейсы (репозитории, события). 
+Содержит логику бизнес-процессов, но не работает напрямую с базой данных или Kafka.
+- interfaces/ — абстракции, которые реализует infrastructure.
+- dtos/ — промежуточные структуры для передачи в presentation.
+
+
+### domain
+
+- entities/ — @dataclass для бизнес-сущностей, без ORM и фреймворков.
+- errors.py — чистые ошибки домена, например BalanceNotFoundError.
+
+### infrastructure
+
+Знает как реализовать интерфейсы и работать с технологиями, но не содержит бизнес-логику.
+
+- db/models/ — SQLAlchemy модели.
+- repositories/ — реализация интерфейсов репозиториев.
+- messaging/kafka/ — producer, consumer, router для Kafka.
+- auth/ — AuthClient для Kafka авторизации.
+
+
+
+
+
 ## Запуск
 
 Перед запуском убедитесь, что **minikube запущен**.
