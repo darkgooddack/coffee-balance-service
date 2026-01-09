@@ -3,11 +3,11 @@ import json
 from aiokafka import AIOKafkaConsumer
 from app.core.config import settings
 from app.core.logging import logger
-from app.infrastructure.messaging.kafka.router import KafkaRouter
+from app.infrastructure.messaging.router import MessageRouter
 
 
 class KafkaConsumerManager:
-    def __init__(self, router: KafkaRouter, group_id: str):
+    def __init__(self, router: MessageRouter, group_id: str):
         self.router = router
         self.group_id = group_id
         self._consumer: AIOKafkaConsumer | None = None
@@ -15,7 +15,7 @@ class KafkaConsumerManager:
 
     async def start(self):
         self._consumer = AIOKafkaConsumer(
-            *self.router.topics,
+            *self.router.events,
             bootstrap_servers=[settings.kafka.servers],
             group_id=self.group_id,
             value_deserializer=lambda v: json.loads(v.decode("utf-8")),

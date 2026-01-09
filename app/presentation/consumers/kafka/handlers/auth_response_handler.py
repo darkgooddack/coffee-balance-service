@@ -1,9 +1,9 @@
-from app.infrastructure.messaging.kafka.base_handler import KafkaMessageHandler
 from app.core.logging import logger
+from app.infrastructure.messaging.base_handler import MessageHandler
 from app.infrastructure.messaging.kafka.correlation import resolve_future
 
 
-class AuthResponseHandler(KafkaMessageHandler):
+class AuthResponseHandler(MessageHandler):
     topic = "user.auth.response"
 
     async def handle(self, payload: dict) -> None:

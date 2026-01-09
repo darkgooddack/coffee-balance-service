@@ -8,7 +8,7 @@ from app.core.exceptions import map_exception
 from app.core.logging import logger
 
 from app.infrastructure.messaging.kafka.consumer import KafkaConsumerManager
-from app.infrastructure.messaging.kafka.router import KafkaRouter
+from app.infrastructure.messaging.router import MessageRouter
 from app.presentation.consumers.kafka.handlers.auth_response_handler import (
     AuthResponseHandler,
 )
@@ -23,7 +23,7 @@ handlers = [
     UserRegisteredHandler(),
 ]
 
-kafka_router = KafkaRouter(handlers)
+kafka_router = MessageRouter(handlers)
 kafka_consumer = KafkaConsumerManager(
     kafka_router,
     group_id="coffee-balance-service",
