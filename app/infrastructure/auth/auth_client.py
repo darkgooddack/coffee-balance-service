@@ -1,14 +1,17 @@
 import uuid
 import asyncio
-from app.infrastructure.messaging.kafka.correlation import create_future, resolve_future
+
+from app.application.interfaces.event_publisher import EventPublisher
 from app.domain.errors import (
     InvalidTokenError,
     UserNotFoundError,
     InternalServiceError,
     AuthTimeoutError,
-    TokenExpiredError
+    TokenExpiredError,
 )
-from app.infrastructure.messaging.kafka.producer import get_kafka_producer
+from app.infrastructure.messaging.kafka.correlation import (
+    create_future,
+)
 
 
 ERROR_MAP = {
@@ -22,33 +25,35 @@ ERROR_MAP = {
 
 class AuthClient:
 
-    def __init__(self):
-        self._producer = None
+    def __init__(self, publisher: EventPublisher):
+        self._publisher = publisher
 
-    async def _get_producer(self):
-        if self._producer is None:
-            self._producer = await get_kafka_producer()
-        return self._producer
-
-    async def get_user_id_by_token(self, token: str, timeout: float = 10.0) -> str:
+    async def get_user_id_by_token(
+        self,
+        token: str,
+        timeout: float = 10.0,
+    ) -> str:
         request_id = str(uuid.uuid4())
         future = create_future(request_id)
 
-        producer = await self._get_producer()
-        await producer.send(
+        await self._publisher.publish(
             "user.auth.request",
-            {"request_id": request_id, "token": token},
+            {
+                "request_id": request_id,
+                "token": token,
+            },
         )
 
         try:
             payload = await asyncio.wait_for(future, timeout)
+
             if payload.get("error"):
-                exc_class = ERROR_MAP.get(payload["error"], InternalServiceError)
-                raise exc_class()
+                exc = ERROR_MAP.get(payload["error"], InternalServiceError)
+                raise exc()
 
             user_id = payload.get("user_id")
             if not user_id:
-                raise InternalServiceError("Внутренняя ошибка сервиса")
+                raise InternalServiceError()
 
             return user_id
 

@@ -1,9 +1,10 @@
-from app.infrastructure.messaging.kafka.base_handler import KafkaMessageHandler
+
 from app.core.logging import logger
 from app.core.dependencies import get_balance_service
+from app.infrastructure.messaging.base_handler import MessageHandler
 
 
-class UserRegisteredHandler(KafkaMessageHandler):
+class UserRegisteredHandler(MessageHandler):
     topic = "user.registered"
 
     async def handle(self, payload: dict) -> None:
