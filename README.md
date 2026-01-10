@@ -1,5 +1,10 @@
 # coffee-balance-service
 
+![Python](https://img.shields.io/badge/python-3.11-blue?style=flat)
+![Event-driven](https://img.shields.io/badge/event--driven-architecture-lightgrey?style=flat)
+![Kubernetes](https://img.shields.io/badge/kubernetes-ready-326CE5?style=flat)
+![Docker](https://img.shields.io/badge/docker-container-2496ED?style=flat)
+
 Сервис баланса пользователей. Отвечает за хранение и изменение баланса, взаимодействует с другими сервисами через события.
 
 Упрощённая схема проекта.
