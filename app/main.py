@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
+from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import JSONResponse
 
 from app.core.config import settings
@@ -52,11 +53,22 @@ async def lifespan(app: FastAPI):
             logger.warning(f"Error stopping Kafka consumer: {e}")
 
 
-
 app = FastAPI(
     name="coffee-balance-service",
     description="Сервис баланса",
     lifespan=lifespan,
+)
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://127.0.0.1:5500",
+        "http://localhost:5500",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
